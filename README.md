@@ -55,28 +55,30 @@ Dashboard + Recommendations
 
 ---
 ## ⚙️ Tech Stack
-IBM watsonx Orchestrate
-Agentic AI
-APIs (Weather Integration)
-HTML Dashboard
-Python (logic layer)
+- IBM watsonx Orchestrate
+- Agentic AI
+- APIs (Weather Integration)
+- HTML Dashboard
+- Python (logic layer)
 
 ------
 
 ## 📊 Impact
-Enables real-time decision-making for grid operators
-Reduces manual analysis effort
-Improves energy distribution efficiency
-Demonstrates practical use of agentic AI in critical infrastructure
-📷 Demo / Screenshots
+- Enables real-time decision-making for grid operators
+- Reduces manual analysis effort
+- Improves energy distribution efficiency
+- Demonstrates practical use of agentic AI in critical infrastructure
 
-(Add screenshots here)
+---
+## 📷 Demo / Screenshots
+<img width="1906" height="1033" alt="image" src="https://github.com/user-attachments/assets/874e8549-9302-4e8e-8326-f6030d4b92b8" />
+
 -----
 
 ## 🚀 Future Improvements
-Multi-agent collaboration (forecasting + reporting agents)
-Advanced predictive analytics
-Integration with smart grid infrastructure
+- Multi-agent collaboration (forecasting + reporting agents)
+- Advanced predictive analytics
+- Integration with smart grid infrastructure
 
 -----
 
