@@ -37,7 +37,6 @@ EnergAI introduces an **AI-powered energy operator agent** that:
 - 💬 Natural language interaction with operators  
 
 ---
-
 ## 🏗️ Architecture
 
 ```text
@@ -52,3 +51,33 @@ Computation Engine (Supply vs Demand)
 Decision Layer (Surplus / Deficit / Alerts)
         ↓
 Dashboard + Recommendations
+```
+
+---
+## ⚙️ Tech Stack
+IBM watsonx Orchestrate
+Agentic AI
+APIs (Weather Integration)
+HTML Dashboard
+Python (logic layer)
+
+------
+
+## 📊 Impact
+Enables real-time decision-making for grid operators
+Reduces manual analysis effort
+Improves energy distribution efficiency
+Demonstrates practical use of agentic AI in critical infrastructure
+📷 Demo / Screenshots
+
+(Add screenshots here)
+-----
+
+## 🚀 Future Improvements
+Multi-agent collaboration (forecasting + reporting agents)
+Advanced predictive analytics
+Integration with smart grid infrastructure
+
+-----
+
+
