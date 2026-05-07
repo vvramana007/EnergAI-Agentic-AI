@@ -1,27 +1,54 @@
 # ⚡ EnergAI – Agentic AI for Renewable Energy Optimization
 
-## Overview
-EnergAI is an agentic AI solution designed to help grid operators analyze renewable energy supply, demand, surplus, and deficit conditions in real time.
+## 📌 Overview
+EnergAI is an agentic AI system designed to help grid operators analyze renewable energy supply, demand, surplus, and deficit conditions in real time.
 
-## Problem
-Renewable energy systems depend heavily on solar, wind, weather, and demand fluctuations. Operators need quick insights to balance energy resources efficiently.
+The system uses an AI energy operator to process solar, wind, demand, and weather inputs and generate actionable recommendations for efficient energy management.
 
-## Solution
-This project uses an AI energy operator agent to process solar, wind, demand, and weather inputs and generate actionable recommendations.
+---
 
-## Key Features
-- Natural language interaction with an AI energy operator
-- Real-time renewable supply and demand analysis
-- Weather-aware decision support
-- Surplus and deficit detection
-- Dashboard-based operator experience
+## 🚨 Problem
+Renewable energy systems are highly dependent on:
+- Solar variability  
+- Wind fluctuations  
+- Weather conditions  
+- Demand spikes  
 
-## Tech Stack
-- IBM watsonx Orchestrate
-- Agentic AI
-- APIs
-- HTML Dashboard
-- Renewable Energy Analytics
+Operators struggle to make quick, accurate decisions in real time.
 
-## Impact
-This solution demonstrates how agentic AI can support smarter, faster, and more automated grid operations.
+---
+
+## 💡 Solution
+EnergAI introduces an **AI-powered energy operator agent** that:
+
+- Accepts natural language or structured inputs  
+- Integrates real-time weather data  
+- Performs supply-demand analysis  
+- Detects surplus/deficit scenarios  
+- Generates actionable recommendations  
+
+---
+
+## 🧠 Key Features
+- 🤖 Agentic AI system using IBM watsonx Orchestrate  
+- 🌦 Weather-aware energy analysis  
+- ⚡ Real-time supply vs demand evaluation  
+- 📊 Interactive dashboard integration  
+- 💬 Natural language interaction with operators  
+
+---
+
+## 🏗️ Architecture
+
+```text
+User Input (Solar / Wind / Demand)
+        ↓
+Agentic AI (watsonx Orchestrate)
+        ↓
+Weather API Integration
+        ↓
+Computation Engine (Supply vs Demand)
+        ↓
+Decision Layer (Surplus / Deficit / Alerts)
+        ↓
+Dashboard + Recommendations
