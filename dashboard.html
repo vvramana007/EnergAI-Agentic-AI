@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>IBM Energy Grid Control Dashboard</title>
+  <style>
+    body {margin: 0; background: #f3f6fa; font-family: 'Segoe UI', sans-serif;}
+    header {background: #20355b; color: #fff; padding: 2rem 1rem;}
+    .main {display: flex; margin: 30px; gap: 30px;}
+    .left, .sidebar {flex: 1; min-width: 340px;}
+    .center {flex: 2;}
+    .card {background: #fff; border-radius: 10px; margin-bottom: 24px; padding: 20px 26px; box-shadow: 0 2px 10px #e3eaf5;}
+    .weather {font-size: 1.1em; color: #20355b;}
+    h2 {margin-top: 0; font-size: 1.25rem;}
+    .agent-box {min-height:340px;}
+    .scenario-inputs label {display:block; margin:12px 0 4px;}
+    .scenario-inputs input {width:80px;padding:7px; font-size:1rem;}
+    .scenario-actions button {margin: 22px 12px 0 0; padding: 9px 22px; background: #20355b; color: #fff; border: none; border-radius: 6px; font-size:1rem;}
+    .scenario-actions button:hover {background: #315dbb;}
+    .ai-hr {margin:18px 0;}
+    .alert {color: #DF2935; font-weight:bold;}
+    table.data {margin-top:18px; border-collapse:collapse; font-size:1.05em;}
+    table.data td {padding:4px 14px;}
+    table.data tr td:first-child {font-weight:bold;}
+    .sideguidance {font-size:1.04em;}
+    .ibm-logo {height:46px; vertical-align:middle; margin-right:32px;}
+    @media (max-width:900px) {.main{flex-direction:column;} .sidebar{margin-left:0 !important;}}
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://1.cms.s81c.com/sites/default/files/2022-10/ibm_logo_wide.svg" class="ibm-logo" alt="IBM Logo">
+    <span style="font-size:2rem;font-weight:600;margin-left:10px;">
+      Energy Resource Allocator — Grid Control Dashboard
+    </span>
+  </header>
+  <div class="main">
+    <!-- Left Panel: Agent/Chat -->
+    <div class="left card">
+      <h2>Energy Assistant</h2>
+      <div id="agent-chat" class="agent-box"></div>
+  <script>
+  window.wxOConfiguration = {
+    orchestrationID: "74a5d03d3e9142c7beae980da52fa5ba_cc344fd0-dad6-4137-82a6-649d81e0746f",
+    hostURL: "https://us-south.watson-orchestrate.cloud.ibm.com",
+    rootElementID: "root",
+    deploymentPlatform: "ibmcloud",
+    crn: "crn:v1:bluemix:public:watsonx-orchestrate:us-south:a/74a5d03d3e9142c7beae980da52fa5ba:cc344fd0-dad6-4137-82a6-649d81e0746f::",
+    chatOptions: {
+        agentId: "ddddadb1-1a34-407e-80af-b55ec53ee7aa", 
+        agentEnvironmentId: "c5f116f1-5e42-4c69-8d2d-cc5289a84395",
+    }
+  };
+  setTimeout(function () {
+    const script = document.createElement('script');
+    script.src = `${window.wxOConfiguration.hostURL}/wxochat/wxoLoader.js?embed=true`;
+    script.addEventListener('load', function () {
+        wxoLoader.init();
+    });
+    document.head.appendChild(script);
+  }, 0);                     
+</script>
+    </div>
+    <!-- Center Panel: Weather, Inputs, Chart -->
+    <div class="center">
+      <div class="card weather" id="weather-card"></div>
+      <div class="card">
+        <h2>Operator Input</h2>
+        <div class="scenario-inputs">
+          <label for="solar">Solar Generation (MW):</label>
+          <input id="solar" type="number" min="0" max="200" value="100"/>
+          <label for="wind">Wind Generation (MW):</label>
+          <input id="wind" type="number" min="0" max="200" value="25"/>
+          <label for="demand">Grid Demand (MW):</label>
+          <input id="demand" type="number" min="0" max="250" value="90"/>
+        </div>
+        <div class="scenario-actions">
+          <button onclick="calcAndShow()">Analyze</button>
+          <button onclick="setQuick(100,25,90)">Sunny Midday</button>
+          <button onclick="setQuick(10,65,110)">Wind Surge, Peak Demand</button>
+          <button onclick="setQuick(0,30,40)">Night (Wind Only)</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Live Energy Distribution</h2>
+        <canvas id="energyChart" height="140"></canvas>
+        <table class="data" id="summary-table"></table>
+      </div>
+    </div>
+    <!-- Right Sidebar: AI Recommendations -->
+    <div class="sidebar card">
+      <h2>AI Guidance</h2>
+      <div class="sideguidance" id="ai-guidance">
+        Enter scenario and analyze for actionable grid advice.
+      </div>
+    </div>
+  </div>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // --- Weather Integration (replace call with IBM Weather API in production) ---
+    function fetchWeather() {
+      // Mockup for now; replace with IBM API fetch
+      return {
+        location: "Denver",
+        conditions: "Partly Cloudy",
+        temperature_C: 18,
+        cloudCover_pct: 70,
+        windSpeed_mps: 3.2
+      };
+    }
+    // --- Chart Logic ---
+    let chart;
+    function drawChart(solar, wind, demand) {
+      let data = {
+        labels: ['Solar', 'Wind', 'Demand'],
+        datasets: [{
+          label: 'MW',
+          data: [solar, wind, demand],
+          backgroundColor: ['#FFB400', '#4098D7', '#DF2935']
+        }]
+      };
+      if (chart) chart.destroy();
+      chart = new Chart(document.getElementById('energyChart'), {
+        type: 'bar',
+        data,
+        options: { responsive: true, plugins: { legend: { display: false } } }
+      });
+    }
+    // --- Professional Analysis Logic ---
+    function analyzeScenario(solar, wind, demand, weather) {
+      let total = solar + wind;
+      let net = total - demand;
+      let coverage = Math.round((total / demand) * 1000) / 10;
+      let advice = "";
+      let alerts = [];
+      if (net > 0) {
+        advice = `✅ <b>SURPLUS DETECTED</b><br>Store <b>${net} MW</b> or export to grid.`;
+      } else if (net < 0) {
+        advice = `⚠️ <b>DEFICIT ALERT</b><br>Activate <b>${-net} MW</b> backup immediately.`;
+      } else {
+        advice = `✅ <b>PERFECTLY BALANCED:</b> Supply matches demand.`;
+      }
+      advice += `<br><b>Coverage:</b> ${coverage}%`;
+      if (solar === 0) alerts.push("Nighttime – no solar generation.");
+      if (coverage < 70) alerts.push("CRITICAL: Coverage is critically low!");
+      if (wind > 60) alerts.push("Strong wind contribution detected.");
+      if (demand > 100) alerts.push("Peak demand period.");
+      if (weather.cloudCover_pct > 70) alerts.push("High cloud cover — solar below optimum.");
+      if (weather.windSpeed_mps < 3) alerts.push("Calm wind, reduced wind power.");
+      if (weather.windSpeed_mps > 15) alerts.push("High winds – turbine throttling possible.");
+      return { total, net, coverage, advice, alerts: alerts };
+    }
+    function updateWeatherDisplay(weather) {
+      document.getElementById('weather-card').innerHTML =
+        `<b>${weather.location} Weather:</b><br>
+        ${weather.conditions}<br>
+        Temperature: ${weather.temperature_C}°C<br>
+        Clouds: ${weather.cloudCover_pct}%<br>
+        Wind: ${weather.windSpeed_mps} m/s`;
+    }
+    function updateSummaryTable(solar, wind, demand, total, net, coverage) {
+      document.getElementById("summary-table").innerHTML = `
+      <tr><td>Solar</td><td>${solar} MW</td></tr>
+      <tr><td>Wind</td><td>${wind} MW</td></tr>
+      <tr><td>Total Supply</td><td>${total} MW</td></tr>
+      <tr><td>Demand</td><td>${demand} MW</td></tr>
+      <tr><td>Net Balance</td><td>${net} MW</td></tr>
+      <tr><td>Coverage</td><td>${coverage}%</td></tr>
+      `;
+    }
+    function calcAndShow() {
+      let solar = parseInt(document.getElementById('solar').value || 0, 10);
+      let wind = parseInt(document.getElementById('wind').value || 0, 10);
+      let demand = parseInt(document.getElementById('demand').value || 1, 10);
+      let weather = fetchWeather();
+      updateWeatherDisplay(weather);
+      let result = analyzeScenario(solar, wind, demand, weather);
+      drawChart(solar, wind, demand);
+      updateSummaryTable(solar, wind, demand, result.total, result.net, result.coverage);
+      document.getElementById('ai-guidance').innerHTML =
+        `<div>${result.advice}</div><hr>` +
+        result.alerts.map(a => `<div class="alert">⚠️ ${a}</div>`).join('');
+    }
+    function setQuick(s, w, d) {
+      document.getElementById('solar').value = s;
+      document.getElementById('wind').value = w;
+      document.getElementById('demand').value = d;
+      calcAndShow();
+    }
+    setQuick(100,25,90);
+  </script>
+</body>
+</html>
