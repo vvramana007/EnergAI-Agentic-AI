@@ -71,7 +71,9 @@ Dashboard + Recommendations
 
 ---
 ## 📷 Demo / Screenshots
-<img width="1906" height="1033" alt="image" src="https://github.com/user-attachments/assets/874e8549-9302-4e8e-8326-f6030d4b92b8" />
+<img width="1885" height="1012" alt="image" src="https://github.com/user-attachments/assets/57aa68a7-1d03-4be6-b26a-285cb6180738" />
+
+<img width="1882" height="998" alt="image" src="https://github.com/user-attachments/assets/bf26e985-b927-4907-aa54-e0aaff1b038e" />
 
 -----
 
